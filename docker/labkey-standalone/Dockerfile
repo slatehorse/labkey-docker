@@ -1,13 +1,14 @@
 # DOCKER-VERSION 1.0.0
 #
 # Dockerfile for Standalone LabKey Server. 
+# Based heavily on https://github.com/LabKey/samples/tree/master/docker/labkey-standalone.
 # Database and LabKey files are a stored inside the container. This is meant for demo only. 
 # Developer version of this will use host or container based volumes for Database and 
 # LabKey Server file roots.
 
 # Use Ubuntu 14.04 as our base 
 from ubuntu:14.04
-maintainer bconn@labkey.com
+maintainer ryan@ryanbrooks.co.uk
 
 #
 # Install the required packages 
@@ -48,7 +49,7 @@ run mkdir -p /labkey/apps
 #
 # Install Oracle Java 
 # 
-add ./labkey/src/server-jre-7u60-linux-x64.tar.gz /labkey/apps/
+add ./labkey/src/server-jre-7u80-linux-x64.gz /labkey/apps/
 # run tar xzf /labkey/src/server-jre-7u60-linux-x64.tar.gz
 # run mv ./jdk1.7.0_60 /labkey/apps
 run ls -la /labkey/apps/
@@ -65,12 +66,12 @@ run ls -la /labkey/apps/
 run useradd -m -u 3000 tomcat7
 
 # Install Tomcat binaries
-add ./tomcat/apache-tomcat-7.0.54.tar.gz /labkey/apps
+add ./tomcat/apache-tomcat-7.0.61.tar.gz /labkey/apps
 #run tar xzf /labkey/src/apache-tomcat-7.0.54.tar.gz
 #run mv ./apache-tomcat-7.0.54 /labkey/apps/
-run (ln -s /labkey/apps/apache-tomcat-7.0.54 /labkey/apps/tomcat; \
+run (ln -s /labkey/apps/apache-tomcat-7.0.61 /labkey/apps/tomcat; \
      mkdir -p /labkey/apps/tomcat/conf/Catalina/localhost; \
-    chown -R tomcat7.tomcat7 /labkey/apps/apache-tomcat-7.0.54 )
+    chown -R tomcat7.tomcat7 /labkey/apps/apache-tomcat-7.0.61 )
 
 # Install configuration files
 add ./tomcat/server.xml /labkey/apps/tomcat/conf/server.xml 
@@ -103,21 +104,21 @@ USER root
 # 
 
 # Copy files to the container 
-copy ./labkey/src/LabKey14.1-31615-bin.tar.gz /labkey/src/LabKey14.1-31615-bin.tar.gz
+copy ./labkey/src/LabKey15.1-37094.13-bin.tar.gz /labkey/src/LabKey15.1-37094.13-bin.tar.gz
 add ./labkey/labkey.xml /labkey/apps/tomcat/conf/Catalina/localhost/ROOT.xml
 add ./labkey/start_labkey.sh /labkey/bin/start_labkey.sh
 add ./labkey/init_xvfb /labkey/bin/xvfb.sh
 run chmod +x /labkey/bin/*
 
 # Install the LabKey Server 
-run (tar xzf /labkey/src/LabKey14.1-31615-bin.tar.gz; \
-     cp -R LabKey14.1-31615-bin/bin /labkey/labkey; \
-     cp -R LabKey14.1-31615-bin/modules /labkey/labkey; \
-     cp -R LabKey14.1-31615-bin/labkeywebapp /labkey/labkey; \
-     cp -R LabKey14.1-31615-bin/pipeline-lib /labkey/labkey; \
-     cp -f LabKey14.1-31615-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
+run (tar xzf /labkey/src/LabKey15.1-37094.13-bin.tar.gz; \
+     cp -R LabKey15.1-37094.13-bin/bin /labkey/labkey; \
+     cp -R LabKey15.1-37094.13-bin/modules /labkey/labkey; \
+     cp -R LabKey15.1-37094.13-bin/labkeywebapp /labkey/labkey; \
+     cp -R LabKey15.1-37094.13-bin/pipeline-lib /labkey/labkey; \
+     cp -f LabKey15.1-37094.13-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
      chown -R tomcat7.tomcat7 /labkey/labkey; \
-     rm -rf LabKey14.1-31615-bin)
+     rm -rf 15.1-37094.13-bin)
 
 # Clean-up 
 #run rm /labkey/src/server-jre-7u60-linux-x64.tar.gz
@@ -128,6 +129,7 @@ run (tar xzf /labkey/src/LabKey14.1-31615-bin.tar.gz; \
 
 # Expose LabKey Server web application 
 expose 8080
+VOLUME /labkey/labkey/externalModules
 
 # 
 # Start Tomcat and PostgreSQL Daemons when container is started.
