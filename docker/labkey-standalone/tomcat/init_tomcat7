@@ -36,7 +36,7 @@ CATALINA_HOME=/labkey/apps/tomcat
 CATALINA_BASE=$CATALINA_HOME
 JAVA_OPTS="-Djava.awt.headless=true -Duser.timezone=America/Los_Angeles -Xms256M -Xmx2048M -XX:MaxPermSize=196M -Djava.net.preferIPv4Stack=true"
 JVM_TMP=$CATALINA_HOME/temp
-JAVA_HOME=/labkey/apps/jdk1.7.0_80
+JAVA_HOME=/labkey/apps/jdk1.8.0_51
 
 # Run Tomcat 7 as this user ID and group ID
 TOMCAT7_USER=tomcat7

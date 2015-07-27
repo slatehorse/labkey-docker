@@ -12,7 +12,7 @@ This folder contains the Dockerfile, additional scripts and instructions for bui
 
 An image built with this Dockerfile is available at [bconn/labkey-standalone](https://registry.hub.docker.com/u/bconn/labkey-standalone/) on DockerHub. This image contains: 
 
-* LabKey Server 14.1 
+* LabKey Server 15.1
 * Tomcat 7
 * Oracle Java 7
 * PostgreSQL 9.3 
