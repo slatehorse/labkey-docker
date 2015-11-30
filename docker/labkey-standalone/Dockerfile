@@ -41,10 +41,7 @@ run (DEBIAN_FRONTEND=noninteractive apt-get -y -q install postgresql-9.3 postgre
 #
 # Create directories required for running LabKey Server
 # 
-run mkdir -p /labkey/labkey
-run mkdir -p /labkey/src/labkey
-run mkdir -p /labkey/bin
-run mkdir -p /labkey/apps
+run mkdir -p /labkey/labkey /labkey/src/labkey /labkey/bin /labkey/apps
 
 #
 # Install Oracle Java 
@@ -100,21 +97,21 @@ USER root
 # 
 
 # Copy files to the container 
-copy ./labkey/src/LabKey15.2-38772.11-bin.tar.gz /labkey/src/LabKey15.2-38772.11-bin.tar.gz
+copy ./labkey/src/LabKey15.2-38987.16-bin.tar.gz /labkey/src/labkey-bin.tar.gz
 add ./labkey/labkey.xml /labkey/apps/tomcat/conf/Catalina/localhost/ROOT.xml
 add ./labkey/start_labkey.sh /labkey/bin/start_labkey.sh
 add ./labkey/init_xvfb /labkey/bin/xvfb.sh
 run chmod +x /labkey/bin/*
 
 # Install the LabKey Server 
-run (tar xzf /labkey/src/LabKey15.2-38772.11-bin.tar.gz; \
-     cp -R LabKey15.2-38772.11-bin/bin /labkey/labkey; \
-     cp -R LabKey15.2-38772.11-bin/modules /labkey/labkey; \
-     cp -R LabKey15.2-38772.11-bin/labkeywebapp /labkey/labkey; \
-     cp -R LabKey15.2-38772.11-bin/pipeline-lib /labkey/labkey; \
-     cp -f LabKey15.2-38772.11-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
+run (tar xzf /labkey/src/labkey-bin.tar.gz; \
+     cp -R LabKey15.2-38987.16-bin/bin /labkey/labkey; \
+     cp -R LabKey15.2-38987.16-bin/modules /labkey/labkey; \
+     cp -R LabKey15.2-38987.16-bin/labkeywebapp /labkey/labkey; \
+     cp -R LabKey15.2-38987.16-bin/pipeline-lib /labkey/labkey; \
+     cp -f LabKey15.2-38987.16-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
      chown -R tomcat7.tomcat7 /labkey/labkey; \
-     rm -rf LabKey15.2-38772.11-bin)
+     rm -rf LabKey15.2-38987.16-bin)
 
 # Clean-up 
 #run rm /labkey/src/server-jre-7u60-linux-x64.tar.gz
