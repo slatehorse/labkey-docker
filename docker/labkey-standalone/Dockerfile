@@ -104,14 +104,14 @@ add ./labkey/init_xvfb /labkey/bin/xvfb.sh
 run chmod +x /labkey/bin/*
 
 # Install the LabKey Server 
-run (tar xzf /labkey/src/labkey-bin.tar.gz; \
-     cp -R LabKey15.2-38987.16-bin/bin /labkey/labkey; \
-     cp -R LabKey15.2-38987.16-bin/modules /labkey/labkey; \
-     cp -R LabKey15.2-38987.16-bin/labkeywebapp /labkey/labkey; \
-     cp -R LabKey15.2-38987.16-bin/pipeline-lib /labkey/labkey; \
-     cp -f LabKey15.2-38987.16-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
+run (tar xzf /labkey/src/LabKey15.3-41116.23-legacy-bin.tar.gz; \
+     cp -R LabKey15.3-41116.23-legacy-bin/bin /labkey/labkey; \
+     cp -R LabKey15.3-41116.23-legacy-bin/modules /labkey/labkey; \
+     cp -R LabKey15.3-41116.23-legacy-bin/labkeywebapp /labkey/labkey; \
+     cp -R LabKey15.3-41116.23-legacy-bin/pipeline-lib /labkey/labkey; \
+     cp -f LabKey15.3-41116.23-legacy-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
      chown -R tomcat7.tomcat7 /labkey/labkey; \
-     rm -rf LabKey15.2-38987.16-bin)
+     rm -rf LabKey15.3-41116.23-legacy-bin)
 
 # Clean-up 
 #run rm /labkey/src/server-jre-7u60-linux-x64.tar.gz
