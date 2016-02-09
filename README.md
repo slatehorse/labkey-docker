@@ -19,8 +19,8 @@ An image built with this Dockerfile is available at [slatehorse/labkey-standalon
 ### Create the image
 To create the image you will need do the following:
 
-1. Download the latest version of [Oracle JAVA 7 ServerJRE](http://www.oracle.com/technetwork/java/javase/downloads/server-jre7-downloads-1931105.html) to `./lib` directory 
-1. Download the latest version of [Tomcat 7](http://tomcat.apache.org/download-70.cgi) binary distribution to `./lib`
+1. Download the latest version of [Oracle JAVA 8 Server JRE](http://www.oracle.com/technetwork/java/javase/downloads/server-jre7-downloads-1931105.html) to `./lib` directory 
+1. Download the latest version of [Tomcat 8](http://tomcat.apache.org/download-80.cgi) binary distribution to `./lib`
     * Use the _Core tar.gz_ download
 1. Download the latest version of [LabKey Server](http://labkey.com/download-labkey-server) to `./lib` directory
     * Use the _Binaries for Manual Linux/Mac/Unix Installation_ link
