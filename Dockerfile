@@ -46,7 +46,9 @@ run mkdir -p /labkey/labkey /labkey/src/labkey /labkey/bin /labkey/apps
 #
 # Install Oracle Java 
 # 
-add ./labkey/src/server-jre-8u51-linux-x64.gz /labkey/apps/
+ADD ./lib/server-jre-8u51-linux-x64.gz /labkey/apps/
+ENV JAVA_HOME=/labkey/apps/jdk1.8.0_51
+ENV JAVA_OPTS="-Djava.awt.headless=true -Duser.timezone=Europe/London -Xms256M -Xmx2048M -XX:MaxPermSize=196M -Djava.net.preferIPv4Stack=true"
 
 # 
 # Install Tomcat 
@@ -56,33 +58,30 @@ add ./labkey/src/server-jre-8u51-linux-x64.gz /labkey/apps/
 # repository
 
 # Create the Tomcat 7 user account 
-run useradd -m -u 3000 tomcat7
+run useradd -m -u 3000 tomcat
 
 # Install Tomcat binaries
-add ./tomcat/apache-tomcat-8.0.30.tar.gz /labkey/apps
-#run tar xzf /labkey/src/apache-tomcat-7.0.54.tar.gz
-#run mv ./apache-tomcat-8.0.30 /labkey/apps/
+add ./lib/apache-tomcat-8.0.30.tar.gz /labkey/apps
 run (ln -s /labkey/apps/apache-tomcat-8.0.30 /labkey/apps/tomcat; \
      mkdir -p /labkey/apps/tomcat/conf/Catalina/localhost; \
-    chown -R tomcat7.tomcat7 /labkey/apps/apache-tomcat-8.0.30 )
+    chown -R tomcat.tomcat /labkey/apps/apache-tomcat-8.0.30 )
 
 # Install configuration files
 add ./tomcat/server.xml /labkey/apps/tomcat/conf/server.xml 
-add ./tomcat/init_tomcat7 /labkey/bin/tomcat7.sh
 
 
 # 
 # Configure the PostgreSQL Server 
 # 
-add ./postgresql/postgresql.conf /etc/postgresql/9.3/main/postgresql.conf
+add ./postgresql/postgresql.conf /etc/postgresql/9.4/main/postgresql.conf
 
 # Recreate the database server to ensure the default encoding is UTF8
-run (rm -rf /var/lib/postgresql/9.3/main; \
-     mkdir /var/lib/postgresql/9.3/main; \
-     chown postgres.postgres /var/lib/postgresql/9.3/main)
+run (rm -rf /var/lib/postgresql/9.4/main; \
+     mkdir /var/lib/postgresql/9.4/main; \
+     chown postgres.postgres /var/lib/postgresql/9.4/main)
 
 USER postgres
-run /usr/lib/postgresql/9.3/bin/initdb --locale=C.UTF-8 -D /var/lib/postgresql/9.3/main
+run /usr/lib/postgresql/9.4/bin/initdb --locale=C.UTF-8 -D /var/lib/postgresql/9.4/main
 
 # Create labkey user in postgresql database 
 USER postgres
@@ -97,7 +96,7 @@ USER root
 # 
 
 # Copy files to the container 
-copy ./labkey/src/LabKey15.3-42135.48-community-bin.tar.gz /labkey/src/labkey-bin.tar.gz
+copy ./lib/LabKey15.3-42135.48-community-bin.tar.gz /labkey/src/labkey-bin.tar.gz
 add ./labkey/labkey.xml /labkey/apps/tomcat/conf/Catalina/localhost/ROOT.xml
 add ./labkey/start_labkey.sh /labkey/bin/start_labkey.sh
 add ./labkey/init_xvfb /labkey/bin/xvfb.sh
@@ -110,8 +109,9 @@ run (tar xzf /labkey/src/labkey-bin.tar.gz; \
      cp -R LabKey15.3-42135.48-community-bin/labkeywebapp /labkey/labkey; \
      cp -R LabKey15.3-42135.48-community-bin/pipeline-lib /labkey/labkey; \
      cp -f LabKey15.3-42135.48-community-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
-     rm -rf LabKey15.3-42135.48-community-bin \
-     chown -R tomcat7.tomcat7 /labkey/labkey;)
+     chown -R tomcat.tomcat /labkey/labkey;)
+
+RUN rm -rf LabKey15.3-42135.48-community-bin
 
 
 # Expose LabKey Server web application 
@@ -121,12 +121,5 @@ VOLUME /labkey/labkey/externalModules
 # 
 # Start Tomcat and PostgreSQL Daemons when container is started.
 # 
-workdir /labkey/
-cmd /labkey/bin/start_labkey.sh 
-
-
-
-
-
-
-
+WORKDIR /labkey/
+CMD /labkey/bin/start_labkey.sh

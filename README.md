@@ -25,16 +25,16 @@ To create the image you will need do the following:
 1. Download the latest version of [LabKey Server](http://labkey.com/download-labkey-server) to `./lib` directory
     * Use the _Binaries for Manual Linux/Mac/Unix Installation_ link
 1. Update the `Dockerfile` and change the names in the file to match the ones you downloaded above.
-1. Build the image 
+1. Build the image
         
-        sudo docker build -t slatehorse/labkey-standalone .
+        docker build -t slatehorse/labkey-standalone .
 
 
 ### Running LabKey Server Standalone in a container
 
 To run the image 
 
-    sudo docker run --name labkey-standalone -d -p 8080:8080 slatehorse/labkey-standalone
+    docker run --name labkey-standalone -d -p 8080:8080 slatehorse/labkey-standalone
 
 
 After few seconds, open [http://<host>:8080](http://<host>:8080) to see the LabKey Server initialization page.

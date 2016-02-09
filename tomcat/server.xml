@@ -20,14 +20,13 @@
      Documentation at /docs/config/server.html
  -->
 <Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
   <!--APR library loader. Documentation at /docs/apr.html -->
   <!-- Disable APR Listener as we do not want it to be used on 
        Tomcat server running LabKey Server
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
   -->
-
-  <!--Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html -->
-  <Listener className="org.apache.catalina.core.JasperListener" />
+  
   <!-- Prevent memory leaks due to use of particular java/javax APIs-->
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
