@@ -1,64 +1,44 @@
-samples
+Labkey Docker Image
 ==========
 
-This repository contains scripts and tools which can be used to manage and/or work with data stored in a [LabKey Server](https://www.labkey.org/). 
+Provides the Dockerfile, scripts and instructions needed to build the [slatehorse/labkey-standalone](https://hub.docker.com/r/spikeheap/labkey-standalone/) image.
 
-The scripts and tools that you find here are either in development or have not yet been merged into the LabKey Server [subversion repository](https://www.labkey.org/wiki/home/Documentation/page.view?name=svn) ([more information](https://www.labkey.org/wiki/home/Documentation/page.view?name=openSourceProject))
+Forked from [LabKey/samples](https://github.com/LabKey/samples/tree/master/docker/labkey-standalone) to to follow the release train.
 
-## Available Scripts and Tools 
+**IMPORTANT:** This image is intended for local development and testing, and comes with no warranty of any kind. 
 
-### Python Scripts 
-_Located in the [/python](/LabKey/samples/tree/master/python) folder_
 
-The [LabKey Server Python API](https://www.labkey.org/wiki/home/Documentation/page.view?name=python) provides ways for you to access the data in your LabKey Server programmatically with Python. The LabKey Server Python API does not cover all the functionality of the LabKey Server. These scripts will provide examples for working the LabKey Server Python API and sample scripts for interacting with your LabKey Server in ways not currently covered by the API.
+## Is there an image already built? 
 
-* **upload_file.py**: Use this script to upload a file to your LabKey Server using WEBDAV.
-    * Before using the script, goto the Variables section of the script and change the URL, Project and Folder Path to point to your LabKey Server. 
-    * Requires the [Poster](https://pypi.python.org/pypi/poster/) package  
-    * This script is not officially supported by LabKey.
-* **download_study_archive**: Use this script to create a Study Archive and download the resulting archive to your computer.
-    * Before using the script, goto the Variables section of the script and change the URL, Project and Folder Path to point to your LabKey Server.
-    * Requires the [Poster](https://pypi.python.org/pypi/poster/) package  
-    * This script is not officially supported by LabKey.
+An image built with this Dockerfile is available at [slatehorse/labkey-standalone](https://hub.docker.com/r/spikeheap/labkey-standalone/) on DockerHub. Check out the [tags](https://hub.docker.com/r/spikeheap/labkey-standalone/tags/) to check for available versions and custom builds.
 
 
 
-### Installation and Upgrade
-_Located in the [/ops](/LabKey/samples/tree/master/ops) folder_
+## Usage 
 
-* **install-windows-manual.bat**: Use script to install the LabKey Server binaries on Windows. This should only be used if you are performing at [manual installation](https://www.labkey.org/wiki/home/Documentation/page.view?name=manualInstall).
-    *  This should only be used if you are performing at [manual installation](https://www.labkey.org/wiki/home/Documentation/page.view?name=manualInstall) on a Windows server.
-    * This script is not officially supported by LabKey.
-* **upgrade-windows-manual.bat**:  Use script to upgrade a LabKey Server running on Windows, which was manually installed. 
-    * [Instruction](https://www.labkey.org/announcements/home/Server/Administration/thread.view?rowId=4842)
-    * Do not use this script if you installed your LabKey Server using the [Windows Installer](https://www.labkey.org/wiki/home/Documentation/page.view?name=configWindows). Please use the Windows Installer to upgrade your server
-    * This script is not officially supported by LabKey, but it is used by a number of labs and institutions running LabKey Server on Windows. 
-    * If you have questions or need support, please post a message on the [LabKey Server Community Forum](https://www.labkey.org/project/home/Server/Forum/begin.view?).
-* **upgrade-remote-pipeline.sh**: Use script to upgrade a LabKey Remote Pipeline Server running on \*nix operating system.
-    * This script is not officially supported by LabKey and there is currently no documentation for it. However, I regularly use a modified version of this on my test servers. 
-    * If you have questions or need support, please post a message on the [LabKey Server Community Forum](https://www.labkey.org/project/home/Server/Forum/begin.view?).
-* **upgrade-remote-pipeline.bat**: Use script to upgrade a LabKey Remote Pipeline Server running on Windows that was installed manually.
-    * This script is not officially supported by LabKey and there is currently no documentation for it. However, I regularly use a modified version of this on my test servers.
-    * Do not use this script if you installed your LabKey Remote Pipeline Server using the [Windows Installer](https://www.labkey.org/wiki/home/Documentation/page.view?name=configWindows). Please use the Windows Installer to upgrade your server.
-    * If you have questions or need support, please post a message on the [LabKey Server Community Forum](https://www.labkey.org/project/home/Server/Forum/begin.view?).
-* **labkey-database-backup-sample-script.bat**: This script can be used to perform a nightly backup (using pg_dump) of databases on a PostgreSQL server instance.
-    * This script is not officially supported by LabKey and there is currently no documentation for it.
-    * See [blog entry](http://fourproc.com/2013/05/02/using-labkey-s-sample-backup-script-to-backup-your-postgresql-database.html) for more information on using the script.
+### Create the image
+To create the image you will need do the following:
+
+1. Download the latest version of [Oracle JAVA 7 ServerJRE](http://www.oracle.com/technetwork/java/javase/downloads/server-jre7-downloads-1931105.html) to `./lib` directory 
+1. Download the latest version of [Tomcat 7](http://tomcat.apache.org/download-70.cgi) binary distribution to `./lib`
+    * Use the _Core tar.gz_ download
+1. Download the latest version of [LabKey Server](http://labkey.com/download-labkey-server) to `./lib` directory
+    * Use the _Binaries for Manual Linux/Mac/Unix Installation_ link
+1. Update the `Dockerfile` and change the names in the file to match the ones you downloaded above.
+1. Build the image 
+        
+        sudo docker build -t slatehorse/labkey-standalone .
 
 
-### Docker
-_Located in the [/docker](/LabKey/samples/tree/master/docker) folder_
+### Running LabKey Server Standalone in a container
 
-* **labkey-standalone**: Dockerfile and other source files needed for building a Docker image that runs LabKey Server. 
-    * See the [README](/LabKey/samples/tree/master/docker/labkey-standalone/README.md) file for information on building your own image or 
-    * See [bconn/labkey-standalone](https://registry.hub.docker.com/u/bconn/labkey-standalone/) on DockerHub.
-    * This script is not officially supported by LabKey.
+To run the image 
+
+    sudo docker run --name labkey-standalone -d -p 8080:8080 slatehorse/labkey-standalone
 
 
+After few seconds, open [http://<host>:8080](http://<host>:8080) to see the LabKey Server initialization page.
 
-## Support 
-
-If you need support using these scripts/tools or for the LabKey Server in general, please post message to [LabKey Server Community Forum](https://www.labkey.org/project/home/Server/Forum/begin.view?). Or send me a message on [twitter](https://twitter.com/bdconnolly)([@bdconnolly](https://twitter.com/bdconnolly)).
 
 
 
