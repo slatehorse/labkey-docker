@@ -50,10 +50,12 @@ run mkdir -p /labkey/labkey /labkey/src/labkey /labkey/bin /labkey/apps
 ENV LABKEY_FILENAME=LabKey16.2-45209.14-community-bin.tar.gz
 ENV TOMCAT_FILENAME=apache-tomcat-8.0.36.tar.gz
 ENV JAVASE_FILENAME=server-jre-8u92-linux-x64.tar.gz
-
-ADD ./lib/$LABKEY_FILENAME /labkey/apps/
-ENV JAVA_HOME=/labkey/apps/jdk1.8.0_51
+ENV JAVA_HOME=/labkey/apps/jdk1.8.0_92
 ENV JAVA_OPTS="-Djava.awt.headless=true -Duser.timezone=Europe/London -Xms256M -Xmx2048M -XX:MaxPermSize=196M -Djava.net.preferIPv4Stack=true"
+
+WORKDIR /labkey/apps/
+ADD ./lib/$JAVASE_FILENAME .
+RUN ls -al .
 
 # 
 # Install Tomcat 
@@ -66,7 +68,7 @@ ENV JAVA_OPTS="-Djava.awt.headless=true -Duser.timezone=Europe/London -Xms256M -
 run useradd -m -u 3000 tomcat
 
 # Install Tomcat binaries
-add ./lib/$TOMCAT_FILENAME /labkey/apps
+add ./lib/$TOMCAT_FILENAME .
 run (ln -s /labkey/apps/apache-tomcat-8.0.36 /labkey/apps/tomcat; \
      mkdir -p /labkey/apps/tomcat/conf/Catalina/localhost; \
     chown -R tomcat.tomcat /labkey/apps/apache-tomcat-8.0.36 )

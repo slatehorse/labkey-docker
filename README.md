@@ -39,6 +39,18 @@ To run the image
 
 After few seconds, open [http://<host>:8080](http://<host>:8080) to see the LabKey Server initialization page.
 
+### Pushing this image to the Docker Hub
 
+If you are a maintainer, you can push new versions (e.g. here version 16.2) to the docker hub as follows:
 
+1. Tag the current commit as the release version:
 
+        git tag 16.2
+
+2. Build a tagged image version:
+
+        docker build -t slatehorse/labkey:16.2 .
+
+3. Push the image to the the Docker Hub
+
+        docker push slatehorse/labkey:16.2
