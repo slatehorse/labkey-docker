@@ -46,7 +46,12 @@ run mkdir -p /labkey/labkey /labkey/src/labkey /labkey/bin /labkey/apps
 #
 # Install Oracle Java 
 # 
-ADD ./lib/server-jre-8u51-linux-x64.gz /labkey/apps/
+
+ENV LABKEY_FILENAME=LabKey16.2-45209.14-community-bin.tar.gz
+ENV TOMCAT_FILENAME=apache-tomcat-8.0.36.tar.gz
+ENV JAVASE_FILENAME=server-jre-8u92-linux-x64.tar.gz
+
+ADD ./lib/$LABKEY_FILENAME /labkey/apps/
 ENV JAVA_HOME=/labkey/apps/jdk1.8.0_51
 ENV JAVA_OPTS="-Djava.awt.headless=true -Duser.timezone=Europe/London -Xms256M -Xmx2048M -XX:MaxPermSize=196M -Djava.net.preferIPv4Stack=true"
 
@@ -61,10 +66,10 @@ ENV JAVA_OPTS="-Djava.awt.headless=true -Duser.timezone=Europe/London -Xms256M -
 run useradd -m -u 3000 tomcat
 
 # Install Tomcat binaries
-add ./lib/apache-tomcat-8.0.30.tar.gz /labkey/apps
-run (ln -s /labkey/apps/apache-tomcat-8.0.30 /labkey/apps/tomcat; \
+add ./lib/$TOMCAT_FILENAME /labkey/apps
+run (ln -s /labkey/apps/apache-tomcat-8.0.36 /labkey/apps/tomcat; \
      mkdir -p /labkey/apps/tomcat/conf/Catalina/localhost; \
-    chown -R tomcat.tomcat /labkey/apps/apache-tomcat-8.0.30 )
+    chown -R tomcat.tomcat /labkey/apps/apache-tomcat-8.0.36 )
 
 # Install configuration files
 add ./tomcat/server.xml /labkey/apps/tomcat/conf/server.xml 
@@ -96,7 +101,7 @@ USER root
 # 
 
 # Copy files to the container 
-copy ./lib/LabKey15.3-42135.48-community-bin.tar.gz /labkey/src/labkey-bin.tar.gz
+copy ./lib/$LABKEY_FILENAME /labkey/src/labkey-bin.tar.gz
 add ./labkey/labkey.xml /labkey/apps/tomcat/conf/Catalina/localhost/ROOT.xml
 add ./labkey/start_labkey.sh /labkey/bin/start_labkey.sh
 add ./labkey/init_xvfb /labkey/bin/xvfb.sh
@@ -104,14 +109,14 @@ run chmod +x /labkey/bin/*
 
 # Install the LabKey Server 
 run (tar xzf /labkey/src/labkey-bin.tar.gz; \
-     cp -R LabKey15.3-42135.48-community-bin/bin /labkey/labkey; \
-     cp -R LabKey15.3-42135.48-community-bin/modules /labkey/labkey; \
-     cp -R LabKey15.3-42135.48-community-bin/labkeywebapp /labkey/labkey; \
-     cp -R LabKey15.3-42135.48-community-bin/pipeline-lib /labkey/labkey; \
-     cp -f LabKey15.3-42135.48-community-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
+     cp -R LabKey16.2-45209.14-community-bin/bin /labkey/labkey; \
+     cp -R LabKey16.2-45209.14-community-bin/modules /labkey/labkey; \
+     cp -R LabKey16.2-45209.14-community-bin/labkeywebapp /labkey/labkey; \
+     cp -R LabKey16.2-45209.14-community-bin/pipeline-lib /labkey/labkey; \
+     cp -f LabKey16.2-45209.14-community-bin/tomcat-lib/*.jar /labkey/apps/tomcat/lib/; \
      chown -R tomcat.tomcat /labkey/labkey;)
 
-RUN rm -rf LabKey15.3-42135.48-community-bin
+RUN rm -rf LabKey16.2-45209.14-community-bin
 
 
 # Expose LabKey Server web application 
