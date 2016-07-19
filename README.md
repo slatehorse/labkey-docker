@@ -3,7 +3,7 @@ Labkey Docker Image
 
 Provides the Dockerfile, scripts and instructions needed to build the [slatehorse/labkey-standalone](https://hub.docker.com/r/spikeheap/labkey-standalone/) image.
 
-Forked from [LabKey/samples](https://github.com/LabKey/samples/tree/master/docker/labkey-standalone) to to follow the release train.
+Forked from [LabKey/samples](https://github.com/LabKey/samples/tree/master/docker/labkey-standalone) to follow the release train.
 
 **IMPORTANT:** This image is intended for local development and testing, and comes with no warranty of any kind. 
 
